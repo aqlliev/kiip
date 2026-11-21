@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>KIIP Level 1 - Quiz & Speaking Prep</title>
+<style>
+:root{
+  --cream:#F3EEE3; --ink:#111111; --orange:#D9541E; --card:#FFFFFF;
+  --muted:#6b675e; --green:#2e7d4f; --yellow:#b58900; --red:#c0392b; --line:#e4ddcd;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Roboto,sans-serif;font-size:16px;line-height:1.45;padding-bottom:76px;}
+header.top{position:sticky;top:0;background:var(--cream);z-index:5;padding:14px 16px 10px;border-bottom:1px solid var(--line);}
+header.top h1{font-size:18px;margin:0;}
+header.top .dday{color:var(--orange);font-weight:700;font-size:13px;margin-top:2px;}
+main{padding:14px 16px;max-width:640px;margin:0 auto;}
+nav.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;z-index:10;padding-bottom:env(safe-area-inset-bottom);}
+nav.tabs button{flex:1;background:none;border:0;padding:10px 0 12px;font-size:12px;color:var(--muted);font-weight:600;}
+nav.tabs button.on{color:var(--orange);}
+nav.tabs button .ic{display:block;font-size:20px;margin-bottom:2px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:700;background:var(--ink);color:#fff;cursor:pointer;margin-top:10px;}
+.btn.orange{background:var(--orange);}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+.btn:disabled{opacity:.45;}
+.row{display:flex;gap:8px;}
+.row .btn{margin-top:10px;}
+h2{font-size:17px;margin:0 0 10px;}
+h3{font-size:15px;margin:18px 0 8px;}
+.stat{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:15px;}
+.stat:last-child{border-bottom:0;}
+.stat b{font-variant-numeric:tabular-nums;}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;}
+.dot.g{background:var(--green);} .dot.y{background:var(--yellow);} .dot.r{background:var(--red);}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;display:flex;margin:10px 0 4px;}
+.bar i{display:block;height:100%;}
+select,input[type=text]{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;background:#fff;color:var(--ink);}
+label.lab{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:12px 0 5px;}
+.qword{font-size:30px;font-weight:800;text-align:center;margin:14px 0 4px;}
+.qsub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:14px;}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;font-size:16px;margin-bottom:9px;cursor:pointer;color:var(--ink);}
+.opt.correct{border-color:var(--green);background:#eaf5ee;}
+.opt.wrong{border-color:var(--red);background:#fbeae8;}
+.opt:disabled{cursor:default;}
+.fb{border-radius:12px;padding:12px 14px;font-size:14px;margin-top:4px;display:none;}
+.fb.show{display:block;}
+.fb.ok{background:#eaf5ee;} .fb.no{background:#fbeae8;}
+.fb .kr{font-weight:700;font-size:16px;}
+.fb .ex{margin-top:6px;color:#333;}
+.fb .tr{color:var(--muted);font-style:italic;}
+.hintbox{background:#fff7e0;border:1px solid #eedfa8;border-radius:10px;padding:10px 12px;font-size:14px;margin-top:10px;display:none;}
+.hintbox.show{display:block;}
+.mini{background:none;border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;}
+.progressline{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:8px;}
+.wordrow{border-bottom:1px solid var(--line);padding:11px 2px;}
+.wordrow .top{display:flex;align-items:center;gap:8px;}
+.wordrow .k{font-weight:700;font-size:16px;flex:1;}
+.wordrow .e{color:var(--muted);font-size:14px;}
+.stchip{border:0;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.stchip.s0{background:#f3d9d2;color:var(--red);}
+.stchip.s1{background:#f6ebc9;color:#8a6d00;}
+.stchip.s2{background:#d9ecdf;color:var(--green);}
+.wordrow .det{display:none;margin-top:8px;font-size:14px;background:#fbf9f3;border-radius:10px;padding:10px 12px;}
+.wordrow.open .det{display:block;}
+.wordrow .det .ex{font-weight:600;}
+.wordrow .det .tr{color:var(--muted);font-style:italic;}
+.wordrow .det .ht{margin-top:5px;color:#7a5c00;font-size:13px;}
+.pill{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:13px;margin:0 6px 6px 0;cursor:pointer;}
+.pill.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+details.sp{border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:10px;padding:0;}
+details.sp summary{padding:13px 14px;font-weight:700;cursor:pointer;list-style:none;font-size:15px;}
+details.sp summary::-webkit-details-marker{display:none;}
+details.sp summary::after{content:"+";float:right;color:var(--orange);font-weight:800;}
+details.sp[open] summary::after{content:"–";}
+details.sp .body{padding:0 14px 14px;font-size:14.5px;}
+mark{background:#ffe9a8;padding:0 2px;border-radius:3px;}
+.kpas{background:#fbf9f3;border-radius:10px;padding:12px 14px;margin:8px 0;font-size:16px;line-height:1.7;}
+.pron{color:var(--orange);font-size:13px;}
+.eng{color:var(--muted);font-style:italic;font-size:13.5px;}
+.hist{font-size:13.5px;color:#333;}
+.hist .hrow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--line);}
+.chk{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14.5px;cursor:pointer;}
+.chk input{width:19px;height:19px;accent-color:var(--orange);}
+.tip{background:#eef3fb;border-radius:10px;padding:10px 12px;font-size:13.5px;margin:8px 0;}
+.big-score{font-size:44px;font-weight:800;text-align:center;margin:8px 0;}
+.center{text-align:center;}
+.blank{background:#fff;border:2px dashed var(--orange);border-radius:12px;padding:16px;font-size:19px;text-align:center;margin:12px 0;line-height:1.8;}
+input.answer{width:100%;padding:13px;border:2px solid var(--ink);border-radius:12px;font-size:18px;text-align:center;margin-top:6px;}
+.small{font-size:12.5px;color:var(--muted);}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>KIIP Level 1 · 한국어 퀴즈</h1>
+  <div class="dday" id="dday"></div>
+</header>
+<main id="main"></main>
+<nav class="tabs">
+  <button data-tab="home" class="on"><span class="ic">🏠</span>Home</button>
+  <button data-tab="quiz"><span class="ic">✏️</span>Quiz</button>
+  <button data-tab="words"><span class="ic">📖</span>Words</button>
+  <button data-tab="speak"><span class="ic">🎤</span>Speaking</button>
+</nav>
+<script src="data.js"></script>
+<script>
+// ---------- storage ----------
+const LS='kiipL1.v1';
+let S;
+try{ S=JSON.parse(localStorage.getItem(LS))||{} }catch(e){ S={} }
+S.words=S.words||{};      // k -> {s:0|1|2,c,w}
+S.hist=S.hist||[];        // {d,mode,scope,n,ok}
+S.spk=S.spk||{};          // speaking checklist
+function save(){ try{ localStorage.setItem(LS,JSON.stringify(S)); }catch(e){} }
+function ws(k){ return S.words[k]||{s:0,c:0,w:0}; }
+function bump(k,ok){
+  const w=S.words[k]=ws(k);
+  if(ok){ w.c++; w.s=Math.min(2,w.s+1); } else { w.w++; w.s=Math.max(0,w.s-1); }
+  save();
+}
+function counts(){
+  let m=0,l=0,n=0;
+  for(const w of DATA.words){ const s=ws(w.k).s; if(s===2)m++; else if(s===1)l++; else n++; }
+  return {m,l,n};
+}
+// ---------- helpers ----------
+const $=s=>document.querySelector(s);
+const main=$('#main');
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function norm(s){return s.replace(/[\s.!?~,]+/g,'').trim();}
+const UNITS=DATA.units;
+function unitName(n){const u=UNITS.find(u=>u.n===n);return n+'과 '+u.t;}
+// ---------- routing ----------
+let tab='home';
+document.querySelectorAll('nav.tabs button').forEach(b=>{
+  b.onclick=()=>{ tab=b.dataset.tab;
+    document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.toggle('on',x===b));
+    render();
+  };
+});
+// ---------- HOME ----------
+function dday(){
+  const now=new Date(); const exam=new Date('2026-12-06T09:00:00+09:00');
+  const d=Math.ceil((exam-now)/86400000);
+  return d>0?('D-'+d+' until the exam (Dec 6)'):(d===0?'Exam day! Good luck 화이팅!':'Exam passed');
+}
+function renderHome(){
+  const c=counts(); const tot=DATA.words.length;
+  const last=S.hist.slice(-5).reverse();
+  main.innerHTML=`
+  <div class="card">
+    <h2>Your progress</h2>
+    <div class="bar"><i style="width:${(c.m/tot*100)}%;background:var(--green)"></i><i style="width:${(c.l/tot*100)}%;background:var(--yellow)"></i></div>
+    <div class="stat"><span><span class="dot g"></span>Mastered</span><b>${c.m} / ${tot}</b></div>
+    <div class="stat"><span><span class="dot y"></span>Learning</span><b>${c.l}</b></div>
+    <div class="stat"><span><span class="dot r"></span>Not yet</span><b>${c.n}</b></div>
+    <button class="btn orange" onclick="goQuiz()">Start a quiz ✏️</button>
+    <button class="btn ghost" onclick="goTab('speak')">Speaking prep 🎤</button>
+  </div>
+  <div class="card">
+    <h2>Recent quizzes</h2>
+    ${last.length?('<div class="hist">'+last.map(h=>{
+      const d=new Date(h.d);
+      return '<div class="hrow"><span>'+esc(modeName(h.mode))+' · '+esc(h.scope)+'</span><b>'+h.ok+'/'+h.n+'</b></div>';
+    }).join('')+'</div>'):'<div class="small">No quizzes yet. Your results will show up here.</div>'}
+  </div>
+  <div class="card small">495 words · 18 units · from your KIIP Level 1 book. Progress is saved on this phone automatically.</div>`;
+}
+function modeName(m){return {mc_ke:'Meaning pick',mc_ek:'Word pick',type:'Type the word',blank:'Fill the blank'}[m]||m;}
+function goQuiz(){tab='quiz';syncTabs();render();}
+function goTab(t){tab=t;syncTabs();render();}
+function syncTabs(){document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.tab===tab));}
+// ---------- QUIZ ----------
+let Q=null; // {mode,scope,unit,qs:[],i,ok,hintShown}
+function renderQuizSetup(){
+  main.innerHTML=`
+  <div class="card">
+    <h2>Quiz setup</h2>
+    <label class="lab">Mode</label>
+    <select id="qmode">
+      <option value="mc_ke">See Korean → pick the English meaning</option>
+      <option value="mc_ek">See English → pick the Korean word</option>
+      <option value="type">See English → type the Korean word</option>
+      <option value="blank">Fill the blank in the example sentence</option>
+    </select>
+    <label class="lab">Scope</label>
+    <select id="qunit">
+      <option value="0">All units</option>
+      ${UNITS.map(u=>'<option value="'+u.n+'">'+esc(u.n+'과 '+u.t)+'</option>').join('')}
+    </select>
+    <label class="lab">Focus</label>
+    <select id="qfocus">
+      <option value="all">Everything</option>
+      <option value="weak">Weak words first (not mastered)</option>
+      <option value="phrase">Phrases only</option>
+    </select>
+    <button class="btn orange" onclick="startQuiz()">Start (10 questions)</button>
+  </div>`;
+}
+function pool(){
+  const unit=+($('#qunit')?$('#qunit').value:(Q?Q.unit:0));
+  const focus=$('#qfocus')?$('#qfocus').value:'all';
+  let p=DATA.words.slice();
+  if(unit) p=p.filter(w=>w.u===unit);
+  if(focus==='phrase') p=p.filter(w=>w.y===1);
+  if(focus==='weak') p=p.filter(w=>ws(w.k).s<2);
+  return p;
+}
+function startQuiz(){
+  const mode=$('#qmode').value, unit=+$('#qunit').value;
+  let p=pool();
+  if(mode==='blank') p=p.filter(w=>w.x.includes(w.k));
+  if(p.length<4){ alert('Not enough words in this scope - widen it.'); return; }
+  const weakFirst = shuffle(p.slice().sort((a,b)=>(ws(a.k).s+ws(a.k).c*0.1)-(ws(b.k).s+ws(b.k).c*0.1)));
+  Q={mode,unit,scopeName:unit?unitName(unit):'All units',qs:weakFirst.slice(0,Math.min(10,p.length)),i:0,ok:0,done:false};
+  renderQuestion();
+}
+function mcOptions(word,field){
+  const others=shuffle(DATA.words.filter(w=>w.k!==word.k && w.y===word.y));
+  const opts=[word[field]];
+  for(const o of others){ if(opts.length>=4)break; if(!opts.includes(o[field]))opts.push(o[field]); }
+  return shuffle(opts);
+}
+function renderQuestion(){
+  const w=Q.qs[Q.i];
+  const n=Q.qs.length;
+  let body='';
+  if(Q.mode==='mc_ke'){
+    body='<div class="qword">'+esc(w.k)+'</div><div class="qsub">What does it mean?</div>'
+      +mcOptions(w,'e').map(o=>'<button class="opt" data-v="'+esc(o)+'">'+esc(o)+'</button>').join('');
+  }else if(Q.mode==='mc_ek'){
+    body='<div class="qword">'+esc(w.e)+'</div><div class="qsub">Which Korean word is it?</div>'
+      +mcOptions(w,'k').map(o=>'<button class="opt" data-v="'+esc(o)+'">'+esc(o)+'</button>').join('');
+  }else if(Q.mode==='type'){
+    body='<div class="qword">'+esc(w.e)+'</div><div class="qsub">Type the Korean word</div>'
+      +'<input class="answer" id="ans" autocomplete="off" autocapitalize="off" placeholder="한국어로 써 보세요">'
+      +'<button class="btn" id="checkBtn">Check</button>';
+  }else{ // blank
+    const sent=w.x.replace(w.k,'＿＿＿');
+    body='<div class="qsub">Fill the blank:</div><div class="blank">'+esc(sent)+'</div><div class="qsub">('+esc(w.t)+')</div>'
+      +mcOptions(w,'k').map(o=>'<button class="opt" data-v="'+esc(o)+'">'+esc(o)+'</button>').join('');
+  }
+  main.innerHTML=`
+  <div class="card">
+    <div class="progressline"><span>Question ${Q.i+1} / ${n}</span><span>✅ ${Q.ok}</span></div>
+    ${body}
+    ${w.h?'<button class="mini" id="hintBtn" style="margin-top:6px">💡 Hint</button><div class="hintbox" id="hintBox">'+esc(w.h)+'</div>':''}
+    <div class="fb" id="fb"></div>
+    <button class="btn orange" id="nextBtn" style="display:none">Next →</button>
+  </div>`;
+  const hb=$('#hintBtn'); if(hb) hb.onclick=()=>{$('#hintBox').classList.add('show');hb.style.display='none';};
+  if(Q.mode==='type'){
+    const check=()=>{
+      const v=$('#ans').value; if(!v.trim())return;
+      finish(norm(v)===norm(w.k), w.k);
+    };
+    $('#checkBtn').onclick=check;
+    $('#ans').addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    setTimeout(()=>$('#ans').focus(),50);
+  }else{
+    document.querySelectorAll('.opt').forEach(b=>{
+      b.onclick=()=>{
+        const right=b.dataset.v===((Q.mode==='mc_ke')?w.e:w.k);
+        document.querySelectorAll('.opt').forEach(x=>{
+          x.disabled=true;
+          if(x.dataset.v===((Q.mode==='mc_ke')?w.e:w.k))x.classList.add('correct');
+        });
+        if(!right)b.classList.add('wrong');
+        finish(right,null);
+      };
+    });
+  }
+}
+function finish(right,typed){
+  const w=Q.qs[Q.i];
+  bump(w.k,right);
+  if(right)Q.ok++;
+  const fb=$('#fb');
+  fb.className='fb show '+(right?'ok':'no');
+  fb.innerHTML=(right?'<b>Correct! 🎉</b>':'<b>Not quite.</b> Answer: <span class="kr">'+esc(w.k)+'</span> — '+esc(w.e))
+    +(typed&&!right?'<div class="small">You typed: '+esc(typed)+'</div>':'')
+    +'<div class="ex">'+esc(w.x)+'</div><div class="tr">'+esc(w.t)+'</div>';
+  const nb=$('#nextBtn'); nb.style.display='block';
+  nb.textContent=(Q.i+1>=Q.qs.length)?'See results':'Next →';
+  nb.onclick=()=>{ Q.i++; if(Q.i>=Q.qs.length)renderResult(); else renderQuestion(); };
+  const ci=$('#checkBtn'); if(ci)ci.disabled=true; const ai=$('#ans'); if(ai)ai.disabled=true;
+}
+function renderResult(){
+  const n=Q.qs.length;
+  S.hist.push({d:Date.now(),mode:Q.mode,scope:Q.scopeName,n,ok:Q.ok});
+  if(S.hist.length>100)S.hist=S.hist.slice(-100);
+  save();
+  const wrong=Q.qs.filter(w=>ws(w.k).s<2);
+  const pct=Math.round(Q.ok/n*100);
+  const msg=pct>=90?'Excellent! 🔥':pct>=70?'Good job! 💪':pct>=50?'Keep going!':'Review these and retry.';
+  main.innerHTML=`
+  <div class="card center">
+    <h2>Quiz done</h2>
+    <div class="big-score">${Q.ok} / ${n}</div>
+    <div class="qsub">${esc(Q.scopeName)} · ${esc(modeName(Q.mode))}</div>
+    <p>${msg}</p>
+    <div class="row">
+      <button class="btn orange" onclick="startQuizSame()">Again 🔁</button>
+      <button class="btn ghost" onclick="goTab('home')">Home</button>
+    </div>
+  </div>
+  ${wrong.length?'<div class="card"><h2>Still to master</h2>'+wrong.map(w=>'<div class="stat"><span><b>'+esc(w.k)+'</b> · '+esc(w.e)+'</span><span class="small">'+(ws(w.k).s===1?'Learning':'Not yet')+'</span></div>').join('')+'</div>':''}`;
+}
+function startQuizSame(){
+  // re-run with same settings
+  tab='quiz';renderQuizSetup();
+  $('#qmode').value=Q.mode; $('#qunit').value=String(Q.unit);
+  startQuiz();
+}
+// ---------- WORDS ----------
+let wfilter={q:'',u:0,s:-1};
+function renderWords(){
+  const list=DATA.words.filter(w=>{
+    if(wfilter.u&&w.u!==wfilter.u)return false;
+    if(wfilter.s>=0&&ws(w.k).s!==wfilter.s)return false;
+    if(wfilter.q){const q=wfilter.q.toLowerCase();
+      if(!(w.k.includes(wfilter.q)||w.e.toLowerCase().includes(q)))return false;}
+    return true;
+  });
+  main.innerHTML=`
+  <div class="card">
+    <input type="text" id="wq" placeholder="Search Korean or English…" value="${esc(wfilter.q)}">
+    <div style="margin-top:10px">
+      <span class="pill ${wfilter.s===-1?'on':''}" data-s="-1">All</span>
+      <span class="pill ${wfilter.s===0?'on':''}" data-s="0">🔴 Not yet</span>
+      <span class="pill ${wfilter.s===1?'on':''}" data-s="1">🟡 Learning</span>
+      <span class="pill ${wfilter.s===2?'on':''}" data-s="2">🟢 Mastered</span>
+    </div>
+    <select id="wu" style="margin-top:4px">
+      <option value="0">All units</option>
+      ${UNITS.map(u=>'<option value="'+u.n+'" '+(wfilter.u===u.n?'selected':'')+'>'+esc(u.n+'과 '+u.t)+'</option>').join('')}
+    </select>
+    <div class="small" style="margin-top:8px">${list.length} words · tap the status chip to change it · tap a word for example & hint</div>
+  </div>
+  <div class="card" style="padding:6px 14px">
+    ${list.slice(0,300).map(w=>{const st=ws(w.k).s;return `
+    <div class="wordrow" data-k="${esc(w.k)}">
+      <div class="top">
+        <div><div class="k">${esc(w.k)}${w.y?' <span class="small">phrase</span>':''}</div><div class="e">${esc(w.e)}</div></div>
+        <button class="stchip s${st}" data-k="${esc(w.k)}">${['Not yet','Learning','Mastered'][st]}</button>
+      </div>
+      <div class="det"><div class="ex">${esc(w.x)}</div><div class="tr">${esc(w.t)}</div>${w.h?'<div class="ht">💡 '+esc(w.h)+'</div>':''}<div class="small" style="margin-top:4px">${esc(unitName(w.u))}</div></div>
+    </div>`;}).join('')}
+    ${list.length>300?'<div class="small" style="padding:10px 0">Showing first 300 - use search or filters.</div>':''}
+  </div>`;
+  $('#wq').addEventListener('input',e=>{wfilter.q=e.target.value;renderWords();const el=$('#wq');el.focus();el.setSelectionRange(el.value.length,el.value.length);});
+  $('#wu').onchange=e=>{wfilter.u=+e.target.value;renderWords();};
+  document.querySelectorAll('.pill').forEach(p=>p.onclick=()=>{wfilter.s=+p.dataset.s;renderWords();});
+  document.querySelectorAll('.wordrow .top').forEach(t=>t.onclick=e=>{
+    if(e.target.classList.contains('stchip'))return;
+    t.parentElement.classList.toggle('open');
+  });
+  document.querySelectorAll('.stchip').forEach(c=>c.onclick=()=>{
+    const k=c.dataset.k;const w=S.words[k]=ws(k);
+    w.s=(w.s+1)%3;save();renderWords();
+  });
+}
+// ---------- SPEAKING ----------
+const SPK=[
+ {id:'fmt',t:'📋 Exam format (5 tasks)',b:`
+  <div class="kpas">The speaking test (구술시험) has <b>5 tasks</b>:<br>
+  1. <b>Read aloud</b> - read a short passage.<br>
+  2. <b>Answer questions</b> about that passage (2 questions).<br>
+  3. <b>Talk about yourself</b> - e.g. your own family.<br>
+  4. <b>Describe a photo</b> and say what you want to do.<br>
+  5. <b>Make an appointment</b> - roleplay with the examiner.</div>
+  <div class="tip">Answer in full sentences with polite endings (~입니다 / ~해요). Answer the exact question word (몇 명 → a number, 어디 → a place). You can ask: <mark>질문을 다시 말해 주세요.</mark> (Please repeat the question.)</div>`},
+ {id:'q1',t:'1️⃣ Read aloud - model text & pronunciation',b:`
+  <div class="kpas">저는 링링입니다. 제 가족을 소개하겠습니다. <span class="pron">[소개하겠씀니다]</span><br>
+  우리 가족은 모두 세 명입니다. 남편과 딸이 있습니다. <span class="pron">[이씀니다]</span><br>
+  남편은 한국 식당에서 일합니다. <span class="pron">[일함니다]</span> 재미있고 <span class="pron">[재미읻꼬]</span> 친절합니다.<br>
+  저는 주부입니다. <span class="pron">[주부임니다]</span> 딸은 9살이고 <span class="pron">[아홉 살이고]</span> 지금 초등학교에 다닙니다. <span class="pron">[초등학꾜에]</span></div>
+  <div class="eng">I'm Lingling. Let me introduce my family. There are three of us: my husband and daughter. My husband works at a Korean restaurant. He's fun and kind. I'm a homemaker. My daughter is 9 and goes to elementary school.</div>
+  <div class="tip">Read numbers in Korean (9 → 아홉). Pause at each period. Keep a steady speed - slow and clear beats fast.</div>
+  <label class="chk"><input type="checkbox" data-spk="q1" ${S.spk.q1?'checked':''}> I practiced reading this aloud</label>`},
+ {id:'q2',t:'2️⃣ Passage questions - model answers',b:`
+  <div class="kpas">Q. 가족이 몇 명입니까? <span class="pron">[면명임니까]</span><br>→ <mark>세 명입니다.</mark></div>
+  <div class="eng">How many family members are there? → There are three.</div>
+  <div class="kpas">Q. 링링 씨의 가족을 이야기해 보세요.<br>→ 링링 씨의 가족은 <mark>모두 세 명입니다</mark>. <mark>남편과 딸이 있습니다</mark>. 남편은 한국 식당에서 <mark>일합니다</mark>. 딸은 9살이고 초등학교에 <mark>다닙니다</mark>.</div>
+  <div class="eng">Retell the passage in your own words using the highlighted frames.</div>
+  <label class="chk"><input type="checkbox" data-spk="q2" ${S.spk.q2?'checked':''}> I can answer both questions</label>`},
+ {id:'q3',t:'3️⃣ Your own family - template',b:`
+  <div class="kpas">우리 가족은 <mark>모두 네 명입니다</mark>. <mark>아버지와 어머니, 여동생, 그리고 저입니다</mark>. 부모님은 <mark>우즈베키스탄에 있습니다</mark>. 저는 한국에서 <mark>한국어를 공부합니다</mark>.</div>
+  <div class="eng">There are four of us: my father, mother, younger sister, and me. My parents are in Uzbekistan. I study Korean in Korea.</div>
+  <h3>Swap-ins</h3>
+  <div class="kpas">형 / 누나 / 오빠 / 언니 / 동생 · 회사원입니다 / 선생님입니다 / 주부입니다 / 대학생입니다 · ~에서 일합니다 · ~에 삽니다</div>
+  <div class="tip">Make YOUR version before the exam: number of people → who they are → where they are / what they do. Memorize it as 3 short sentences.</div>
+  <label class="chk"><input type="checkbox" data-spk="q3" ${S.spk.q3?'checked':''}> I prepared my own family answer</label>`},
+ {id:'q4',t:'4️⃣ Photo description - template',b:`
+  <div class="kpas">1) <mark>여기는 바다입니다.</mark> / 여기는 공원입니다. / 여기는 시장입니다.<br>
+  2) 사람들은 <mark>의자에 앉아서 쉬고 있습니다</mark>. / 바다를 구경하고 있습니다.<br>
+  3) 저는 방학에 <mark>바다에 가고 싶습니다</mark>. 제주도에 <mark>가고 싶습니다</mark>. 친구들과 <mark>여행하고 싶습니다</mark>. 사진도 <mark>찍고 싶습니다</mark>.</div>
+  <div class="eng">Frame: where it is (여기는 ~입니다) → what people are doing (~고 있습니다) → what YOU want to do (~고 싶습니다).</div>
+  <div class="tip">Personalize: 경주에 가고 싶습니다. (You mentioned a Gyeongju trip - great real answer.)</div>
+  <label class="chk"><input type="checkbox" data-spk="q4" ${S.spk.q4?'checked':''}> I practiced the photo frames</label>`},
+ {id:'q5',t:'5️⃣ Making an appointment - model dialogue',b:`
+  <div class="kpas">가: 이번 주말에 <mark>시간 있어요?</mark><br>
+  나: 네, 시간 있어요.<br>
+  가: 주말에 동대문 시장에 <mark>갈까요?</mark><br>
+  나: 좋아요. <mark>언제 만날까요?</mark><br>
+  가: 토요일 오후 1시에 동대문역 3번 출구에서 <mark>만나요.</mark></div>
+  <div class="eng">Monologue version: 주말에 동대문 시장에 가요. 토요일 오후 1시에 동대문역 3번 출구에서 만나요.</div>
+  <div class="kpas">Useful: ~에 시간 있어요? · ~에 갈까요? · ~시에 만나요 · ~번 출구에서 만나요 · 몇 시에 만날까요?</div>
+  <label class="chk"><input type="checkbox" data-spk="q5" ${S.spk.q5?'checked':''}> I practiced the dialogue out loud</label>`},
+ {id:'bank',t:'🔑 Reusable phrase bank',b:`
+  <h3>Family</h3><div class="kpas">우리 가족은 모두 ~명입니다 · ~하고/와 ~이/가 있습니다 · ~에서 일합니다 · ~에 다닙니다 · ~살입니다</div>
+  <h3>Describing people & places</h3><div class="kpas">친절합니다 · 재미있습니다 · 여기는/이곳은 ~입니다</div>
+  <h3>Actions & wishes</h3><div class="kpas">~고 있습니다 (is doing now) · ~고 싶습니다 (want to) · ~에 가고 싶습니다</div>
+  <h3>Appointments</h3><div class="kpas">~에 시간 있어요? · ~에 갈까요? · ~시에 만나요 · ~번 출구에서 만나요</div>
+  <h3>Question words</h3><div class="kpas">몇 명 (how many people) · 어디 (where) · 무엇/뭐 (what) · 누구 (who) · 언제 (when)</div>`},
+ {id:'tips',t:'💡 Exam-day tips',b:`
+  <div class="tip">1. Full sentences, polite endings (~입니다 / ~해요).</div>
+  <div class="tip">2. Answer the exact question word: 몇 명 → number, 어디 → place, 언제 → time.</div>
+  <div class="tip">3. Stuck? Say: <mark>질문을 다시 말해 주세요.</mark> or <mark>잘 모르겠습니다.</mark> - it's allowed.</div>
+  <div class="tip">4. Read numbers in Korean: 9살 → 아홉 살, 3번 → 세 번? No - 3번 출구 → 삼 번? Use 삼 번 출구 (sino for exit numbers), 아홉 살 (native for age).</div>
+  <div class="tip">5. Slow and clear wins. Breathe between sentences.</div>`}
+];
+function renderSpeak(){
+  const done=SPK.filter(s=>S.spk[s.id]).length;
+  main.innerHTML=`
+  <div class="card"><h2>Speaking test (구술시험)</h2>
+  <div class="small">Template & guide for all 5 task types, based on the official MOJ sample. Check off each part as you practice it out loud.</div>
+  <div class="bar" style="margin-top:10px"><i style="width:${done/SPK.length*100}%;background:var(--orange)"></i></div>
+  <div class="small">${done}/${SPK.length} sections practiced</div></div>
+  ${SPK.map(s=>'<details class="sp"><summary>'+s.t+'</summary><div class="body">'+s.b+'</div></details>').join('')}`;
+  document.querySelectorAll('[data-spk]').forEach(c=>c.onchange=()=>{S.spk[c.dataset.spk]=c.checked;save();});
+}
+// ---------- render ----------
+function render(){
+  $('#dday').textContent=dday();
+  if(tab==='home')renderHome();
+  else if(tab==='quiz'){ if(Q&&!Q.done&&Q.qs.length&&Q.i<Q.qs.length&&$('#main .progressline'))return; renderQuizSetup(); }
+  else if(tab==='words')renderWords();
+  else if(tab==='speak')renderSpeak();
+}
+render();
+</script>
+</body>
+</html>
